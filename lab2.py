@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from util import print_topological_properties
+from util import print_props_table, print_topological_properties
 
 SUBCLASTER_PROCESSORS = 10
 
@@ -29,12 +29,13 @@ def create_adjacency_matrix(num_clusters):
 
         if cluster < num_clusters - 1:
             adjacency_matrix[base, base + SUBCLASTER_PROCESSORS] = 1
-            adjacency_matrix[base + 5, base + SUBCLASTER_PROCESSORS + 5] = 1
-            adjacency_matrix[base + 9, base + SUBCLASTER_PROCESSORS + 9] = 1
+            adjacency_matrix[base + 5, base + SUBCLASTER_PROCESSORS + 2] = 1
+            adjacency_matrix[base + 9, base + SUBCLASTER_PROCESSORS + 8] = 1
             adjacency_matrix[base + 1, base + SUBCLASTER_PROCESSORS + 1] = 1
             adjacency_matrix[base + 7, base + SUBCLASTER_PROCESSORS + 6] = 1
-        else:
-            adjacency_matrix[base + 5, 2] = 1
+
+    if (num_clusters > 1):
+        adjacency_matrix[2, SUBCLASTER_PROCESSORS * (num_clusters - 1) + 5] = 1
 
     return adjacency_matrix + adjacency_matrix.T
 
@@ -68,14 +69,15 @@ def show_graph(adjacency_matrix, n_clusters):
     plt.figure(figsize=(18, 3))
     nx.draw(graph, pos, with_labels=True, node_size=300, node_color="skyblue", font_weight="bold")
 
-    x1, y1 = pos[3]
-    x2, y2 = pos[n_clusters * SUBCLASTER_PROCESSORS - 4]
-    mid_x, mid_y = (x1 + x2) / 64, (y1 + y2) / 64 + 5
-    mid_x_2, mid_y_2 = (x1 + x2) - mid_x, (y1 + y2) / 64 + 5
+    if n_clusters > 1:
+        x1, y1 = pos[3]
+        x2, y2 = pos[n_clusters * SUBCLASTER_PROCESSORS - 4]
+        mid_x, mid_y = (x1 + x2) / 64, (y1 + y2) / 64 + 5
+        mid_x_2, mid_y_2 = (x1 + x2) - mid_x, (y1 + y2) / 64 + 5
 
-    curve_x = [x1, mid_x, mid_x_2, x2]
-    curve_y = [y1, mid_y, mid_y_2, y2]
-    plt.plot(curve_x, curve_y, color="blue")
+        curve_x = [x1, mid_x, mid_x_2, x2]
+        curve_y = [y1, mid_y, mid_y_2, y2]
+        plt.plot(curve_x, curve_y, color="blue")
 
     plt.show()
 
@@ -83,3 +85,5 @@ n = int(input("Enter the number of clusters: "))
 adjacency_matrix = create_adjacency_matrix(n)
 print_topological_properties(adjacency_matrix)
 show_graph(adjacency_matrix, n)
+
+# print_props_table(10, create_adjacency_matrix)

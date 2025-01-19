@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import networkx as nx
 import math
 
-from util import print_topological_properties
+from util import print_props_table, print_topological_properties
 
 SUBCLASTER_PROCESSORS = 8
 
@@ -109,3 +109,5 @@ grid_width = int(math.sqrt(n))
 adjacency_matrix = create_adjacency_matrix(n, grid_width)
 print_topological_properties(adjacency_matrix)
 show_graph(adjacency_matrix, n, grid_width)
+
+# print_props_table(13, lambda n: create_adjacency_matrix(n, int(math.sqrt(n))))

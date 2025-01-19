@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import networkx as nx
 
-from util import rotate, calculate_angle, print_topological_properties
+from util import print_props_table, rotate, calculate_angle, print_topological_properties
 
 
 SUBCLASTER_PROCESSORS = 6
@@ -101,3 +101,5 @@ n = int(input("Enter the number of clusters: "))
 adjacency_matrix = create_adjacency_matrix(n)
 print_topological_properties(adjacency_matrix)
 show_graph(adjacency_matrix, n)
+
+# print_props_table(17, create_adjacency_matrix)
